@@ -41,7 +41,7 @@ def mark_attacks(rolls, up, rerolls=[], modifier=0):
     rerolled = reroll_dice(rolls, rerolls)
     autopass = rerolled == 6
     autofail = rerolled == 1
-    modified = modify_dice(rolls, modifier)
+    modified = modify_dice(rerolled, modifier)
     successes = np.where(autopass, 1,
                          np.where(autofail, 0,
                                   modified >= up))
@@ -58,7 +58,7 @@ def mark_fails(rolls, below, rerolls=[], modifier=0):
     """
     rerolled = reroll_dice(rolls, rerolls)
     autofail = rerolled == 1
-    modified = modify_dice(rolls, modifier)
+    modified = modify_dice(rerolled, modifier)
     failures = np.where(autofail, 1,
                         np.where(modified != 0, modified < below, 0))
     return failures
