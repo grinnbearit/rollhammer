@@ -9,7 +9,6 @@ class Liberator():
                2: "Grandhammer",
                3: "Grandblade"}
 
-
     def __init__(self, weapon=0, is_prime=False, has_paired=False, health=2):
         """
         `weapon` is the weapon code [0 - 3]
@@ -61,24 +60,28 @@ class Liberator():
         return f"{self_str}\n{stats_str}"
 
 
-    def attack(self, n=1, size=100, to_save=4, save_rerolls=[], save_modifier=0,
+    def attack(self, n=1, size=100, to_save=4,
+               hit_rerolls=set(), wound_rerolls=set(), save_rerolls=set(),
+               hit_modifier=0, wound_modifier=0, save_modifier=0,
                is_tyrant=False):
         """
         `n` is the number of models attacking
         `size` if the number of simulations
-        `is_tyrant` set if the attack is against a tyrant
+        `to_save` is the save roll used in the defence simulation
+        with the parameters `save_rerolls` and `save_modifier`
+
+        `is_tyrant` should be set if Lay Low the Tyrants is triggered
+
+        `hit_rerolls`, `hit_modifier`, `wound_rerolls` `wound_modifier`
+        are settable to add different conditions
         """
         attacks = n * self.attacks
-        hit_rerolls = []
-        hit_modifier = 0
-        wound_rerolls = []
-        wound_modifier = 0
 
         if self.has_paired:
-            hit_rerolls = [1]
+            hit_rerolls.add(1)
 
         if is_tyrant:
-            hit_modifier = 1
+            hit_modifier += 1
 
         save_modifier += self.rend
 
