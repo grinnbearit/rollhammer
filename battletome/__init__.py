@@ -14,7 +14,7 @@ def reroll_dice(rolls, values):
     rerolls dice which match `values` and returns a new rolls matrix
     """
     n, size = rolls.shape
-    mask = np.isin(rolls, values)
+    mask = np.isin(rolls, list(values)) # is in doesn't work with sets
     rerolls = mask * roll_dice(n, size)
     return (rolls * (1 - mask)) + rerolls
 

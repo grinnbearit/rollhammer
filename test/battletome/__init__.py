@@ -38,6 +38,21 @@ class TestRerollDice(unittest.TestCase):
         mock_roll_dice.assert_called_once_with(1, 4)
 
 
+    @patch("battletome.roll_dice")
+    def test_set(self, mock_roll_dice):
+        """
+        passing sets should work as well
+        """
+        rolls = np.array([[1, 2, 3, 4]])
+        rerolls = np.array([[5, 5, 6, 6]])
+        rerolled = np.array([[5, 2, 3, 6]])
+
+        mock_roll_dice.return_value = rerolls
+
+        self.assertTrue((bt.reroll_dice(rolls, {1, 4}) == rerolled).all())
+        mock_roll_dice.assert_called_once_with(1, 4)
+
+
 class TestModifyDice(unittest.TestCase):
 
     def test_positive(self):
